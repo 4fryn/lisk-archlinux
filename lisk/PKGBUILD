@@ -19,6 +19,9 @@ depends=(
   "zip"
   "readline"
   "postgresql"
+  "nodejs"
+  "npm"
+  "pm2"
 )
 source=(
   "https://downloads.lisk.io/lisk/main/lisk-Linux-x86_64.tar.gz"
@@ -27,18 +30,90 @@ sha256sums=(
   "297be5e7e6add74c7b6f07e3c58976b2c996fecb542a449c2fdf690ef9fe82dd"
 )
 
-prepare() {
-   msg2 "Preparing..."
-}
-
-build() {
-   msg2 "Building..."
-}
-
-check() {
-   msg2 "Checking..."
-}
-
 package() {
-   msg2 "Packaging..."
+  msg2 "Packaging..."
+  install -d "${pkgdir}/usr/share/${pkgname}"
+  cp -a "${srcdir}/${pkgname}-Linux-${CARCH}/." "${pkgdir}/usr/share/${pkgname}"
+
+  msg2 "Cleaning binaries..."
+  rm -f ${pkgdir}/usr/share/${pkgname}/bin/node
+  ln -s "/usr/bin/node" "${pkgdir}/usr/share/${pkgname}/bin/node"
+  rm -f ${pkgdir}/usr/share/${pkgname}/bin/npm
+  ln -s "/usr/bin/npm" "${pkgdir}/usr/share/${pkgname}/bin/npm"
+  rm -f ${pkgdir}/usr/share/${pkgname}/bin/pm2
+  ln -s "/usr/bin/pm2" "${pkgdir}/usr/share/${pkgname}/bin/pm2"
+  rm -f ${pkgdir}/usr/share/${pkgname}/bin/pm2-dev
+  ln -s "/usr/bin/pm2-dev" "${pkgdir}/usr/share/${pkgname}/bin/pm2-dev"
+  rm -f ${pkgdir}/usr/share/${pkgname}/bin/pm2-docker
+  ln -s "/usr/bin/pm2-docker" "${pkgdir}/usr/share/${pkgname}/bin/pm2-docker"
+  rm -f ${pkgdir}/usr/share/${pkgname}/bin/rundev
+  ln -s "/usr/bin/rundev" "${pkgdir}/usr/share/${pkgname}/bin/rundev"
+  rm -f ${pkgdir}/usr/share/${pkgname}/pgsql/bin/clusterdb
+  ln -s "/usr/bin/clusterdb" "${pkgdir}/usr/share/${pkgname}/pgsql/bin/clusterdb"
+  rm -f ${pkgdir}/usr/share/${pkgname}/pgsql/bin/createdb
+  ln -s "/usr/bin/createdb" "${pkgdir}/usr/share/${pkgname}/pgsql/bin/createdb"
+  rm -f ${pkgdir}/usr/share/${pkgname}/pgsql/bin/createlang
+  ln -s "/usr/bin/createlang" "${pkgdir}/usr/share/${pkgname}/pgsql/bin/createlang"
+  rm -f ${pkgdir}/usr/share/${pkgname}/pgsql/bin/createuser
+  ln -s "/usr/bin/createuser" "${pkgdir}/usr/share/${pkgname}/pgsql/bin/createuser"
+  rm -f ${pkgdir}/usr/share/${pkgname}/pgsql/bin/dropdb
+  ln -s "/usr/bin/dropdb" "${pkgdir}/usr/share/${pkgname}/pgsql/bin/dropdb"
+  rm -f ${pkgdir}/usr/share/${pkgname}/pgsql/bin/droplang
+  ln -s "/usr/bin/droplang" "${pkgdir}/usr/share/${pkgname}/pgsql/bin/droplang"
+  rm -f ${pkgdir}/usr/share/${pkgname}/pgsql/bin/dropuser
+  ln -s "/usr/bin/dropuser" "${pkgdir}/usr/share/${pkgname}/pgsql/bin/dropuser"
+  rm -f ${pkgdir}/usr/share/${pkgname}/pgsql/bin/ecpg
+  ln -s "/usr/bin/ecpg" "${pkgdir}/usr/share/${pkgname}/pgsql/bin/ecpg"
+  rm -f ${pkgdir}/usr/share/${pkgname}/pgsql/bin/initdb
+  ln -s "/usr/bin/initdb" "${pkgdir}/usr/share/${pkgname}/pgsql/bin/initdb"
+  rm -f ${pkgdir}/usr/share/${pkgname}/pgsql/bin/pg_archivecleanup
+  ln -s "/usr/bin/pg_archivecleanup" "${pkgdir}/usr/share/${pkgname}/pgsql/bin/pg_archivecleanup"
+  rm -f ${pkgdir}/usr/share/${pkgname}/pgsql/bin/pg_basebackup
+  ln -s "/usr/bin/pg_basebackup" "${pkgdir}/usr/share/${pkgname}/pgsql/bin/pg_basebackup"
+  rm -f ${pkgdir}/usr/share/${pkgname}/pgsql/bin/pg_config
+  ln -s "/usr/bin/pg_config" "${pkgdir}/usr/share/${pkgname}/pgsql/bin/pg_config"
+  rm -f ${pkgdir}/usr/share/${pkgname}/pgsql/bin/pg_controldata
+  ln -s "/usr/bin/pg_controldata" "${pkgdir}/usr/share/${pkgname}/pgsql/bin/pg_controldata"
+  rm -f ${pkgdir}/usr/share/${pkgname}/pgsql/bin/pg_ctl
+  ln -s "/usr/bin/pg_ctl" "${pkgdir}/usr/share/${pkgname}/pgsql/bin/pg_ctl"
+  rm -f ${pkgdir}/usr/share/${pkgname}/pgsql/bin/pg_dump
+  ln -s "/usr/bin/pg_dump" "${pkgdir}/usr/share/${pkgname}/pgsql/bin/pg_dump"
+  rm -f ${pkgdir}/usr/share/${pkgname}/pgsql/bin/pg_dumpall
+  ln -s "/usr/bin/pg_dumpall" "${pkgdir}/usr/share/${pkgname}/pgsql/bin/pg_dumpall"
+  rm -f ${pkgdir}/usr/share/${pkgname}/pgsql/bin/pg_isready
+  ln -s "/usr/bin/pg_isready" "${pkgdir}/usr/share/${pkgname}/pgsql/bin/pg_isready"
+  rm -f ${pkgdir}/usr/share/${pkgname}/pgsql/bin/pg_receivexlog
+  ln -s "/usr/bin/pg_receivexlog" "${pkgdir}/usr/share/${pkgname}/pgsql/bin/pg_receivexlog"
+  rm -f ${pkgdir}/usr/share/${pkgname}/pgsql/bin/pg_recvlogical
+  ln -s "/usr/bin/pg_recvlogical" "${pkgdir}/usr/share/${pkgname}/pgsql/bin/pg_recvlogical"
+  rm -f ${pkgdir}/usr/share/${pkgname}/pgsql/bin/pg_resetxlog
+  ln -s "/usr/bin/pg_resetxlog" "${pkgdir}/usr/share/${pkgname}/pgsql/bin/pg_resetxlog"
+  rm -f ${pkgdir}/usr/share/${pkgname}/pgsql/bin/pg_restore
+  ln -s "/usr/bin/pg_restore" "${pkgdir}/usr/share/${pkgname}/pgsql/bin/pg_restore"
+  rm -f ${pkgdir}/usr/share/${pkgname}/pgsql/bin/pg_rewind
+  ln -s "/usr/bin/pg_rewind" "${pkgdir}/usr/share/${pkgname}/pgsql/bin/pg_rewind"
+  rm -f ${pkgdir}/usr/share/${pkgname}/pgsql/bin/pg_test_fsync
+  ln -s "/usr/bin/pg_test_fsync" "${pkgdir}/usr/share/${pkgname}/pgsql/bin/pg_test_fsync"
+  rm -f ${pkgdir}/usr/share/${pkgname}/pgsql/bin/pg_test_timing
+  ln -s "/usr/bin/pg_test_timing" "${pkgdir}/usr/share/${pkgname}/pgsql/bin/pg_test_timing"
+  rm -f ${pkgdir}/usr/share/${pkgname}/pgsql/bin/pg_upgrade
+  ln -s "/usr/bin/pg_upgrade" "${pkgdir}/usr/share/${pkgname}/pgsql/bin/pg_upgrade"
+  rm -f ${pkgdir}/usr/share/${pkgname}/pgsql/bin/pg_xlogdump
+  ln -s "/usr/bin/pg_xlogdump" "${pkgdir}/usr/share/${pkgname}/pgsql/bin/pg_xlogdump"
+  rm -f ${pkgdir}/usr/share/${pkgname}/pgsql/bin/pgbench
+  ln -s "/usr/bin/pgbench" "${pkgdir}/usr/share/${pkgname}/pgsql/bin/pgbench"
+  rm -f ${pkgdir}/usr/share/${pkgname}/pgsql/bin/postgres
+  ln -s "/usr/bin/postgres" "${pkgdir}/usr/share/${pkgname}/pgsql/bin/postgres"
+  rm -f ${pkgdir}/usr/share/${pkgname}/pgsql/bin/postmaster
+  ln -s "/usr/bin/postmaster" "${pkgdir}/usr/share/${pkgname}/pgsql/bin/postmaster"
+  rm -f ${pkgdir}/usr/share/${pkgname}/pgsql/bin/psql
+  ln -s "/usr/bin/psql" "${pkgdir}/usr/share/${pkgname}/pgsql/bin/psql"
+  rm -f ${pkgdir}/usr/share/${pkgname}/pgsql/bin/reindexdb
+  ln -s "/usr/bin/reindexdb" "${pkgdir}/usr/share/${pkgname}/pgsql/bin/reindexdb"
+  rm -f ${pkgdir}/usr/share/${pkgname}/pgsql/bin/vacuumdb
+  ln -s "/usr/bin/vacuumdb" "${pkgdir}/usr/share/${pkgname}/pgsql/bin/vacuumdb"
+
+  msg2 "Installing lisk..."
+  install -d "${pkgdir}/usr/bin"
+  ln -s "/usr/share/${pkgname}/lisk.sh" "${pkgdir}/usr/bin/${pkgname}" 
 }

@@ -1,13 +1,15 @@
+# Maintainer: 4fryn <arch@4fry.net>
+
 pkgname="lisk"
-pkgver=0.0.1
+pkgver=0.8.2
 pkgrel=1
 pkgdesc="The lisk core blockchain application."
-arch="x86_64"
+arch=("x86_64")
 url="https://lisk.io"
-license="GPL3"
-groups="lisk"
-provides="lisk"
-conflicts="lisk-git"
+license=("GPL3")
+groups=("lisk")
+provides=("lisk")
+conflicts=("lisk-git")
 depends=(
   "wget"
   "curl"
@@ -22,5 +24,21 @@ source=(
   "https://downloads.lisk.io/lisk/main/lisk-Linux-x86_64.tar.gz"
 )
 sha256sums=(
-  "0"
+  "297be5e7e6add74c7b6f07e3c58976b2c996fecb542a449c2fdf690ef9fe82dd"
 )
+
+prepare() {
+   msg2 "Preparing..."
+}
+
+build() {
+   msg2 "Building..."
+}
+
+check() {
+   msg2 "Checking..."
+}
+
+package() {
+   msg2 "Packaging..."
+}

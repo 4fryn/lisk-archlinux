@@ -1,0 +1,26 @@
+pkgname="lisk"
+pkgver=0.0.1
+pkgrel=1
+pkgdesc="The lisk core blockchain application."
+arch="x86_64"
+url="https://lisk.io"
+license="GPL3"
+groups="lisk"
+provides="lisk"
+conflicts="lisk-git"
+depends=(
+  "wget"
+  "curl"
+  "tar"
+  "sudo"
+  "unzip"
+  "zip"
+  "readline"
+  "postgresql"
+)
+source=(
+  "https://downloads.lisk.io/lisk/main/lisk-Linux-x86_64.tar.gz"
+)
+sha256sums=(
+  "0"
+)

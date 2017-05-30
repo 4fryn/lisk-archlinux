@@ -17,18 +17,25 @@ depends=(
   "nodejs"
   "npm"
   "pm2"
+  "openssl"
+  "zlib"
+  "icu"
+  "libuv"
+  "http-parser"
 )
 makedeps=(
   "wget"
   "curl"
   "tar"
   "make"
-  "gcc"
+  "clang"
   "unzip"
   "zip"
   "python2"
   "bower"
   "grunt"
+  "procps-ng"
+  "git"
 )
 source=(
   "${pkgname}::git+https://github.com/LiskHQ/lisk.git#branch=master"
@@ -62,6 +69,7 @@ build() {
   msg2 "Building lisk-node..."
   pushd "${srcdir}/lisk-node"
     export PYTHON=python2
+    export CC=clang
     ./configure \
       --prefix=/usr \
       --with-intl=system-icu \

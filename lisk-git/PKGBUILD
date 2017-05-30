@@ -32,7 +32,7 @@ makedeps=(
 )
 source=(
   "${pkgname}::git+https://github.com/LiskHQ/lisk.git#branch=master"
-  "lisk-node::git+https://github.com/LiskHQ/lisk-node.git#branch=v6.10.3-release"
+  "lisk-node::git+https://github.com/LiskHQ/lisk-node.git#branch=v6.10.3-lisk"
 )
 sha256sums=(
   "SKIP"

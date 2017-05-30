@@ -32,7 +32,7 @@ makedeps=(
 )
 source=(
   "${pkgname}::git+https://github.com/LiskHQ/lisk.git#branch=master"
-  "lisk-node::git+https://github.com/LiskHQ/lisk-node.git"
+  "lisk-node::git+https://github.com/LiskHQ/lisk-node.git#branch=v6.10.3-release"
 )
 sha256sums=(
   "SKIP"
@@ -44,10 +44,32 @@ pkgver() {
   git describe --long --tags | sed 's/\([^-]*-g\)/r\1/;s/-/./g'
 }
 
+prepare() {
+  msg "Fixing python2 path..."
+  pushd "${srcdir}/lisk-node"
+    find -type f -exec sed \
+      -e 's_^#!/usr/bin/env python$_&2_' \
+      -e 's_^\(#!/usr/bin/python2\).[45]$_\1_' \
+      -e 's_^#!/usr/bin/python$_&2_' \
+      -e 's_^\( *exec \+\)python\( \+.*\)$_\1python2\2_'\
+      -e 's_^\(.*\)python\( \+-c \+.*\)$_\1python2\2_'\
+      -e "s_'python'_'python2'_" -i {} \;
+    find test/ -type f -exec sed 's_python _python2 _' -i {} \;
+  popd
+}
+
 build() {
   msg2 "Building lisk-node..."
   pushd "${srcdir}/lisk-node"
-    python2 ./configure
+    export PYTHON=python2
+    ./configure \
+      --prefix=/usr \
+      --with-intl=system-icu \
+      --without-npm \
+      --shared-openssl \
+      --shared-zlib \
+      --shared-libuv \
+      --shared-http-parser
     make
   popd
 

@@ -1,0 +1,103 @@
+# Maintainer: 4fryn <arch@4fry.net>
+
+pkgname="lisk-git"
+pkgver=0.8.2.r0.g645c436
+pkgrel=1
+pkgdesc="The lisk core blockchain application. (Latest Git Version)"
+arch=("x86_64")
+url="https://lisk.io"
+license=("GPL3")
+groups=("lisk")
+provides=("lisk")
+conflicts=("lisk")
+depends=(
+  "sudo"
+  "readline"
+  "postgresql"
+  "nodejs"
+  "npm"
+  "pm2"
+  "openssl"
+  "zlib"
+  "icu"
+  "libuv"
+  "http-parser"
+)
+makedeps=(
+  "wget"
+  "curl"
+  "tar"
+  "make"
+  "clang"
+  "unzip"
+  "zip"
+  "python2"
+  "bower"
+  "grunt"
+  "procps-ng"
+  "git"
+)
+source=(
+  "${pkgname}::git+https://github.com/LiskHQ/lisk.git#branch=master"
+  "lisk-node::git+https://github.com/LiskHQ/lisk-node.git#branch=v6.10.3-lisk"
+)
+sha256sums=(
+  "SKIP"
+  "SKIP"
+)
+
+pkgver() {
+  cd "$pkgname"
+  git describe --long --tags | sed 's/\([^-]*-g\)/r\1/;s/-/./g'
+}
+
+prepare() {
+  msg "Fixing python2 path..."
+  pushd "${srcdir}/lisk-node"
+    find -type f -exec sed \
+      -e 's_^#!/usr/bin/env python$_&2_' \
+      -e 's_^\(#!/usr/bin/python2\).[45]$_\1_' \
+      -e 's_^#!/usr/bin/python$_&2_' \
+      -e 's_^\( *exec \+\)python\( \+.*\)$_\1python2\2_'\
+      -e 's_^\(.*\)python\( \+-c \+.*\)$_\1python2\2_'\
+      -e "s_'python'_'python2'_" -i {} \;
+    find test/ -type f -exec sed 's_python _python2 _' -i {} \;
+  popd
+}
+
+build() {
+  msg2 "Building lisk-node..."
+  pushd "${srcdir}/lisk-node"
+    export PYTHON=python2
+    export CC=clang
+    ./configure \
+      --prefix=/usr \
+      --with-intl=system-icu \
+      --without-npm \
+      --shared-openssl \
+      --shared-zlib \
+      --shared-libuv \
+      --shared-http-parser
+    make
+  popd
+
+  msg2 "Building lisk-core..."
+  pushd "${srcdir}/${pkgname}"
+    npm install
+    mkdir -p "${srcdir}/${pkgname}/nodejs/node"
+    cp -a "${srcdir}/lisk-node/*" "${srcdir}/${pkgname}/nodejs/node/"
+    git submodule init
+    git submodule update
+  popd
+
+  msg2 "Building user interface..."
+  pushd "${srcdir}/${pkgname}/public"
+    npm install
+    bower install
+    grunt release
+  popd
+}
+
+package() {
+  msg2 "Packaging..."
+}
